@@ -1,4 +1,5 @@
 """Taller presencial"""
+
 """Taller presencial"""
 
 # pylint: disable=broad-exception-raised
@@ -21,8 +22,9 @@ from toolz.itertoolz import concat  # type: ignore
 #
 def copy_raw_files_to_input_folder(n):
     """Funcion copy_files"""
-    if not os.path.exists("files/input"):
-        os.makedirs("files/input")
+
+    create_directory(directory="files/input")
+
     for file in glob.glob("files/raw/*"):
         for i in range(1, n + 1):
             with open(file, "r", encoding="utf-8") as f:
@@ -135,14 +137,14 @@ def reducer(sequence):
 #
 # Crea el directory de salida
 #
-def create_ouptput_directory(output_directory):
+def create_directory(directory):
     """Create Output Directory"""
 
-    if os.path.exists(output_directory):
-        for file in glob.glob(f"{output_directory}/*"):
+    if os.path.exists(directory):
+        for file in glob.glob(f"{directory}/*"):
             os.remove(file)
-        os.rmdir(output_directory)
-    os.makedirs(output_directory)
+        os.rmdir(directory)
+    os.makedirs(directory)
 
 
 #
@@ -176,7 +178,7 @@ def run_job(input_directory, output_directory):
     sequence = shuffle_and_sort(sequence)
     sequence = reducer(sequence)
 
-    create_ouptput_directory(output_directory)
+    create_directory(output_directory)
     save_output(output_directory, sequence)
     create_marker(output_directory)
 
@@ -194,3 +196,4 @@ if __name__ == "__main__":
 
     end_time = time.time()
     print(f"Tiempo de ejecución: {end_time - start_time:.2f} segundos")
+    
